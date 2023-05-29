@@ -7,6 +7,7 @@ import android.app.DatePickerDialog
 import android.content.Intent
 import android.content.pm.PackageManager
 import android.graphics.Bitmap
+import android.graphics.Canvas
 import android.os.Bundle
 import android.provider.MediaStore
 import android.view.LayoutInflater
@@ -24,9 +25,14 @@ import androidx.core.widget.doOnTextChanged
 import androidx.fragment.app.Fragment
 import androidx.recyclerview.widget.LinearLayoutManager
 import com.google.android.material.textfield.TextInputEditText
+import kotlinx.coroutines.CoroutineScope
+import kotlinx.coroutines.Dispatchers
+import kotlinx.coroutines.launch
+import okhttp3.OkHttpClient
 import pt.ulusofona.deisi.cm2223.g22001936_22006023.Models.Cinema
 import pt.ulusofona.deisi.cm2223.g22001936_22006023.Models.Filme
 import pt.ulusofona.deisi.cm2223.g22001936_22006023.Adapters.PhotoAdapter
+import pt.ulusofona.deisi.cm2223.g22001936_22006023.Connections.CineViewOkhttp
 import pt.ulusofona.deisi.cm2223.g22001936_22006023.Pipocas.Cinemas
 import pt.ulusofona.deisi.cm2223.g22001936_22006023.Pipocas.Filmes
 import pt.ulusofona.deisi.cm2223.g22001936_22006023.Pipocas.RegistoFilmes
@@ -48,6 +54,7 @@ class RegistarFilmeFragment : Fragment() {
     var format : SimpleDateFormat = SimpleDateFormat("yyyy/MM/dd")
     private var photoList: MutableList<Bitmap> = mutableListOf()
     var adapter = PhotoAdapter(photoList)
+    private lateinit var cineView : CineViewOkhttp
 
 
     override fun onCreateView(
@@ -60,30 +67,40 @@ class RegistarFilmeFragment : Fragment() {
         initDatePicker()
         binding.dataLayout.setEndIconOnClickListener { openDatePicker(binding.root) }
 
-        val adapterFilmes: ArrayAdapter<Filme> =
-            ArrayAdapter<Filme>(requireContext(), R.layout.select_dialog_item, Filmes.filmes)
-
         val adapterCinemas: ArrayAdapter<Cinema> =
             ArrayAdapter<Cinema>(requireContext(), R.layout.select_dialog_item, Cinemas.cinemas)
 
-        val actvFilme = binding.autoCompleteTextViewFilmes
         val actvCinema = binding.autoCompleteTextViewCinemas
 
-        actvFilme.threshold = 1
         actvCinema.threshold = 1 //will start working from first character
 
-        actvFilme.setAdapter(adapterFilmes)
         actvCinema.setAdapter(adapterCinemas)
          //setting the adapter data into the AutoCompleteTextView
-        
+        cineView = CineViewOkhttp(
+            "f7580d7a",
+            OkHttpClient()
+        )
         binding.autoCompleteTextViewFilmes.doOnTextChanged { text, start, before, count ->
-
-            if(Filmes.procurarFilme(text.toString())){
-                binding.filmeLayout.error = null
-            }else{
-                binding.filmeLayout.error = "Filme inexistente por favor escolha um da lista"
+            val adapterFilmes: ArrayAdapter<Filme> =
+                ArrayAdapter<Filme>(requireContext(), R.layout.select_dialog_item, Filmes.filmes)
+            val actvFilme = binding.autoCompleteTextViewFilmes
+            actvFilme.threshold = 1
+            CoroutineScope(Dispatchers.IO).launch {
+                cineView.searchMovie(text.toString()){ result ->
+                    if(result.isSuccess) {
+                        CoroutineScope(Dispatchers.Main).launch {
+                            binding.filmeLayout.error = null
+                            Filmes.updateFilmes(result.getOrDefault(Filme("",0,"","","","",0.0,0,"")))
+                            actvFilme.setAdapter(adapterFilmes)
+                            actvFilme.showDropDown()
+                        }
+                    }else if(result.isFailure){
+                        CoroutineScope(Dispatchers.Main).launch {
+                            binding.filmeLayout.error = "Filme inexistente por favor escolha um da lista"
+                        }
+                    }
+                }
             }
-
         }
 
         binding.autoCompleteTextViewCinemas.doOnTextChanged { text, start, before, count ->
@@ -95,6 +112,8 @@ class RegistarFilmeFragment : Fragment() {
             }
 
         }
+
+
 
         submitButton = binding.submitButton
         submitButton.setOnClickListener { submeter()}
