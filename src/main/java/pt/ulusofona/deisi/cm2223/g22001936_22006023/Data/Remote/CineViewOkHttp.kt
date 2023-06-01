@@ -1,24 +1,24 @@
-package pt.ulusofona.deisi.cm2223.g22001936_22006023.Connections
+package pt.ulusofona.deisi.cm2223.g22001936_22006023.Data
 import android.content.Context
 import android.graphics.Bitmap
-import android.graphics.drawable.BitmapDrawable
 import android.graphics.drawable.Drawable
-import android.util.Log
 import com.squareup.picasso.Picasso
+import kotlinx.coroutines.CoroutineScope
+import kotlinx.coroutines.Dispatchers
+import kotlinx.coroutines.launch
 import okhttp3.*
 import org.json.JSONObject
+import pt.ulusofona.deisi.cm2223.g22001936_22006023.Models.CineView
 import pt.ulusofona.deisi.cm2223.g22001936_22006023.Models.Filme
-import pt.ulusofona.deisi.cm2223.g22001936_22006023.R
-import java.io.File
-import java.io.FileOutputStream
+import pt.ulusofona.deisi.cm2223.g22001936_22006023.Models.RegistoFilme
 import java.io.IOException
 
 class CineViewOkhttp(
-    private val apiKey: String,
+    private val apiKey: String = "f7580d7a",
     private val client: OkHttpClient
-) {
+) :CineView() {
 
-    fun searchMovie(title: String, context: Context, onFinished: (Result<Filme>) -> Unit) {
+    override fun searchMovie(title: String, context: Context, onFinished: (Result<Filme>) -> Unit) {
         val url = "http://www.omdbapi.com/?apikey=$apiKey&t=$title"
 
         val request = Request.Builder()
@@ -51,39 +51,36 @@ class CineViewOkhttp(
         })
     }
 
-    private fun saveImageToDrawable(context: Context, drawable: Drawable, imageName: String) {
-        val bitmap = (drawable as BitmapDrawable).bitmap
-        val directory = "app/src/main/res/drawable/app/src/main/res/drawable-v24/"
+    override fun insertFilmesRegistados(filmes: List<RegistoFilme>, onFinished: () -> Unit) {
+        throw Exception("Operação não permitida")
+    }
 
-        val file = File(directory, "$imageName.jpg")
-        val fileOutputStream: FileOutputStream? = FileOutputStream(file)
+    override fun clearAllFilmesRegistados(onFinished: () -> Unit) {
+        throw Exception("Operação não permitida")
+    }
 
-        try {
-            bitmap.compress(Bitmap.CompressFormat.JPEG, 100, fileOutputStream)
-            fileOutputStream?.flush()
-        } catch (e: Exception) {
-            Log.e("DownloadImage", "Error saving image: ${e.message}")
-        } finally {
-            fileOutputStream?.close()
-        }
+    override fun getFilmesRegistados(onFinished: (Result<List<RegistoFilme>>) -> Unit) {
+        throw Exception("Operação não permitida")
     }
 
 
-    private fun downloadImage(context: Context, imageUrl: String, imageName: String) {
-        Picasso.get()
-            .load(imageUrl)
-            .into(object : com.squareup.picasso.Target {
-                override fun onBitmapLoaded(bitmap: Bitmap?, from: Picasso.LoadedFrom?) {
-                    if (bitmap != null) {
-                        val drawable = BitmapDrawable(context.resources, bitmap)
-                        saveImageToDrawable(context, drawable, imageName)
+
+    private fun downloadImage(context: Context, imageUrl: String, onImageDownloaded: (Bitmap?) -> Unit) {
+        CoroutineScope(Dispatchers.Main).launch {
+            Picasso.get()
+                .load(imageUrl)
+                .into(object : com.squareup.picasso.Target {
+                    override fun onBitmapLoaded(bitmap: Bitmap?, from: Picasso.LoadedFrom?) {
+                        onImageDownloaded(bitmap)
                     }
-                }
 
-                override fun onBitmapFailed(e: Exception?, errorDrawable: Drawable?) {}
+                    override fun onBitmapFailed(e: Exception?, errorDrawable: Drawable?) {
+                        onImageDownloaded(null)
+                    }
 
-                override fun onPrepareLoad(placeHolderDrawable: Drawable?) {}
-            })
+                    override fun onPrepareLoad(placeHolderDrawable: Drawable?) {}
+                })
+        }
     }
 
     private fun parseMovieFromJson(json: JSONObject, context: Context): Filme {
@@ -109,12 +106,18 @@ class CineViewOkhttp(
             "Este filme não existe no IMDB"
         }
 
-        val imageName = "cartaz_${nome.replace(" ","_")}"
         val imageUrl = cartazUrl
+        var filme = Filme("",Bitmap.createBitmap(1, 1, Bitmap.Config.ARGB_8888),"","","","",0.0,0,"")
 
-        downloadImage(context, imageUrl, imageName)
+        downloadImage(context, imageUrl) { bitmap ->
+            filme = if (bitmap != null) {
+                Filme(nome, bitmap, genero, sinopse, atores, dataLancamento, avaliacaoIMDB, votosIMDB, linkIMDB)
+            } else {
+                Filme(nome, null, genero, sinopse, atores, dataLancamento, avaliacaoIMDB, votosIMDB, linkIMDB)
+            }
+        }
 
-        return Filme(nome, imageName, genero, sinopse, atores, dataLancamento, avaliacaoIMDB, votosIMDB, linkIMDB)
+        return filme
     }
 
 

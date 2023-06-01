@@ -7,7 +7,6 @@ import android.app.DatePickerDialog
 import android.content.Intent
 import android.content.pm.PackageManager
 import android.graphics.Bitmap
-import android.graphics.Canvas
 import android.os.Bundle
 import android.provider.MediaStore
 import android.view.LayoutInflater
@@ -32,9 +31,8 @@ import okhttp3.OkHttpClient
 import pt.ulusofona.deisi.cm2223.g22001936_22006023.Models.Cinema
 import pt.ulusofona.deisi.cm2223.g22001936_22006023.Models.Filme
 import pt.ulusofona.deisi.cm2223.g22001936_22006023.Adapters.PhotoAdapter
-import pt.ulusofona.deisi.cm2223.g22001936_22006023.Connections.CineViewOkhttp
+import pt.ulusofona.deisi.cm2223.g22001936_22006023.Data.CineViewOkhttp
 import pt.ulusofona.deisi.cm2223.g22001936_22006023.Pipocas.Cinemas
-import pt.ulusofona.deisi.cm2223.g22001936_22006023.Pipocas.Filmes
 import pt.ulusofona.deisi.cm2223.g22001936_22006023.Pipocas.RegistoFilmes
 import pt.ulusofona.deisi.cm2223.g22001936_22006023.databinding.FragmentRegistarFilmeBinding
 import java.text.SimpleDateFormat
@@ -78,8 +76,7 @@ class RegistarFilmeFragment : Fragment() {
         actvCinema.setAdapter(adapterCinemas)
          //setting the adapter data into the AutoCompleteTextView
         cineView = CineViewOkhttp(
-            "f7580d7a",
-            OkHttpClient()
+            client = OkHttpClient()
         )
         binding.autoCompleteTextViewFilmes.doOnTextChanged { text, start, before, count ->
             val adapterFilmes: ArrayAdapter<Filme> =
@@ -92,9 +89,9 @@ class RegistarFilmeFragment : Fragment() {
                         CoroutineScope(Dispatchers.Main).launch {
                             binding.filmeLayout.error = null
                             if(dropDownFilme.isEmpty()){
-                                dropDownFilme.add(result.getOrDefault(Filme("","","","","","",0.0,0,"")))
+                                dropDownFilme.add(result.getOrDefault(Filme("",Bitmap.createBitmap(1, 1, Bitmap.Config.ARGB_8888),"","","","",0.0,0,"")))
                             }else{
-                                dropDownFilme[0] = result.getOrDefault(Filme("","","","","","",0.0,0,""))
+                                dropDownFilme[0] = result.getOrDefault(Filme("",Bitmap.createBitmap(1, 1, Bitmap.Config.ARGB_8888),"","","","",0.0,0,""))
                             }
 
                             actvFilme.setAdapter(adapterFilmes)

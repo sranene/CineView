@@ -46,10 +46,7 @@ class FilmesAdapter(private val onOperationClick: (String) -> Unit, private var 
             starImageView.setImageResource(R.drawable.ic_star)
             holder.binding.ratingStarsLand?.addView(starImageView)
         }
-        val imgFile = File(items[position].filme.cartaz)
-        if (imgFile.exists()) {
-            holder.binding.cartaz?.setImageURI(Uri.fromFile(imgFile))
-        }
+        holder.binding.cartaz?.setImageBitmap(items[position].filme.cartaz)
         //val bmImg = BitmapFactory.decodeFile(items[position].filme.cartaz)
         //holder.binding.cartaz?.setImageBitmap(bmImg)
 

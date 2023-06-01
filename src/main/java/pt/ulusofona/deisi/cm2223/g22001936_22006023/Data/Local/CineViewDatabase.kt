@@ -1,17 +1,19 @@
-package pt.ulusofona.deisi.cm2223.g22001936_22006023.Connections
+package pt.ulusofona.deisi.cm2223.g22001936_22006023.Data.Local
 
 import android.content.Context
 import androidx.room.Database
 import androidx.room.Room
 import androidx.room.RoomDatabase
+import pt.ulusofona.deisi.cm2223.g22001936_22006023.Data.Local.Entities.RegistoFilmeDB
+import pt.ulusofona.deisi.cm2223.g22001936_22006023.Data.RegistoFilmeDao
 
-@Database(entities = [RegistoFilmeRoom::class], version = 1)
+@Database(entities = [RegistoFilmeDB::class], version = 1)
 abstract class CineViewDatabase : RoomDatabase() {
 
-    abstract fun movieDao(): RegistoFilmeRoom
+    abstract fun registoFilmeDao(): RegistoFilmeDao
 
     companion object {
-        private var instance:CineViewDatabase? = null
+        private var instance: CineViewDatabase? = null
 
         fun getInstance(context: Context): CineViewDatabase {
             synchronized(this) {

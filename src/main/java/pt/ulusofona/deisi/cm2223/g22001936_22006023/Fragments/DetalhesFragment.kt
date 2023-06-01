@@ -63,12 +63,14 @@ class DetalhesFragment : Fragment() {
         //if (imgFile.exists()) {
         //    binding.ivCartaz.setImageURI(Uri.fromFile(imgFile))
         //}
+        //var file = File(ui.filme.cartaz)
 
-        Picasso.get().load(File(ui.filme.cartaz)).into(binding.ivCartaz)
+       // Picasso.get().load(Uri.fromFile(file)).into(binding.ivCartaz)
 
 
-        //val bmImg = BitmapFactory.decodeFile(ui.filme.cartaz)
-        //binding.ivCartaz.setImageBitmap(bmImg)
+
+
+        binding.ivCartaz.setImageBitmap(ui.filme.cartaz)
 
         //binding.ivCartaz.setImageResource(ui.filme.cartaz)
 

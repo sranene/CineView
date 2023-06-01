@@ -25,10 +25,7 @@ class PosterAdapter(private var items: List<Filme> = listOf()) : RecyclerView.Ad
     }
 
     override fun onBindViewHolder(holder: PosterFilmeViewHolder, position: Int) {
-        val imgFile = File(items[position].cartaz)
-        if (imgFile.exists()) {
-            holder.binding.cartaz.setImageURI(Uri.fromFile(imgFile))
-        }
+        holder.binding.cartaz.setImageBitmap(items[position].cartaz)
         //val bmImg = BitmapFactory.decodeFile(items[position].cartaz)
         //holder.binding.cartaz.setImageBitmap(bmImg)
         //holder.binding.cartaz.setImageResource( items[position].cartaz)
