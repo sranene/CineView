@@ -107,7 +107,7 @@ class CineViewOkhttp(
         }
 
         val imageUrl = cartazUrl
-        var filme = Filme("",Bitmap.createBitmap(1, 1, Bitmap.Config.ARGB_8888),"","","","",0.0,0,"")
+        var filme = Filme(nome,Bitmap.createBitmap(1, 1, Bitmap.Config.ARGB_8888),genero,sinopse,atores,dataLancamento,avaliacaoIMDB,votosIMDB,linkIMDB)
 
         downloadImage(context, imageUrl) { bitmap ->
             filme = if (bitmap != null) {
