@@ -1,5 +1,6 @@
 package pt.ulusofona.deisi.cm2223.g22001936_22006023.Pipocas
 
+import android.content.Context
 import android.content.res.Resources
 import android.graphics.Bitmap
 import android.graphics.BitmapFactory
@@ -9,15 +10,13 @@ import kotlin.coroutines.coroutineContext
 
 object Filmes {
 
-    private val _filmes = mutableListOf<Filme>(
-       Filme(nome = "Spider-Man", cartaz = BitmapFactory.decodeResource(Resources.getSystem(), R.drawable.spider_man),genero ="Action, Adventure, Sci-Fi", sinopse = "After being bitten by a genetically-modified spider, a shy teenager gains spider-like abilities that he uses to fight injustice as a masked superhero and face a vengeful enemy", atores = "Tobey Maguire, Kirsten Dunst, Willem Dafoe",dataLancamento = "2002/05/03", avaliacaoIMDB = 7.4, votosIMBD = 831569,linkIMDB = "https://www.imdb.com/title/tt0145487/" ),
-        Filme(nome = "2012",BitmapFactory.decodeResource(Resources.getSystem(), R.drawable.what),"Action, Adventure, Sci-Fi","A frustrated writer struggles to keep his family alive when a series of global catastrophes threatens to annihilate mankind.","John Cusack, Thandiwe Newton, Chiwetel Ejiofor","2009/11/13",5.8,384211,"https://www.imdb.com/title/tt1190080/"),
-        Filme("Cars",BitmapFactory.decodeResource(Resources.getSystem(), R.drawable.cars),"Animation, Adventure, Comedy","On the way to the biggest race of his life, a hotshot rookie race car gets stranded in a rundown town, and learns that winning isn't everything in life.","Owen Wilson, Bonnie Hunt, Paul Newman","2009/06/09",7.2,434062,"https://www.imdb.com/title/tt0317219/"),
-        Filme("The Maze Runner",BitmapFactory.decodeResource(Resources.getSystem(), R.drawable.maze_runner),"Action, Mystery, Sci-Fi","Thomas is deposited in a community of boys after his memory is erased, soon learning they're all trapped in a maze that will require him to join forces with fellow \\\"runners\\\" for a shot at escape.","Dylan O'Brien, Kaya Scodelario, Will Poulter","2014/07/19",6.8,479483,"https://www.imdb.com/title/tt1790864/"),
-        Filme("Elysium",
-            BitmapFactory.decodeResource(Resources.getSystem(), R.drawable.elysium),"Action, Drama, Sci-Fi","In the year 2154, the very wealthy live on a man-made space station while the rest of the population resides on a ruined Earth. A man takes on a mission that could bring equality to the polarized worlds.","Matt Damon, Jodie Foster, Sharlto Copley","2013/08/09",6.6,455061,"https://www.imdb.com/title/tt1535108/"),
-        Filme("Interstellar",BitmapFactory.decodeResource(Resources.getSystem(), R.drawable.interstellar),"Adventure, Drama, Sci-Fi","A team of explorers travel through a wormhole in space in an attempt to ensure humanity's survival.","Matthew McConaughey, Anne Hathaway, Matt Damon","2014/11/07",8.6,1882826,"https://www.imdb.com/title/tt0816692/")
+    val _filmes = mutableListOf<Filme>(
     )
+    fun filmes2(context: Context) : List<Filme>{
+
+        return _filmes.toList()
+    }
+
     fun procurarFilme(nome : String) : Boolean{
         for (filme in filmes){
             if(filme.nome == nome){
@@ -72,6 +71,5 @@ object Filmes {
     }
 
     val filmes get() = _filmes.toList()
-
 
 }

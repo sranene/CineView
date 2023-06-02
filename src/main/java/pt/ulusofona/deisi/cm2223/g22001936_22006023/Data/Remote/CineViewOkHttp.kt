@@ -5,6 +5,7 @@ import android.graphics.drawable.Drawable
 import com.squareup.picasso.Picasso
 import kotlinx.coroutines.CoroutineScope
 import kotlinx.coroutines.Dispatchers
+import kotlinx.coroutines.delay
 import kotlinx.coroutines.launch
 import okhttp3.*
 import org.json.JSONObject
@@ -42,8 +43,10 @@ class CineViewOkhttp(
                             val errorMessage = jsonResponse.getString("Error")
                             onFinished(Result.failure(IOException(errorMessage)))
                         } else {
+                            CoroutineScope(Dispatchers.Main).launch {
                             val movie = parseMovieFromJson(jsonResponse, context)
                             onFinished(Result.success(movie))
+                            }
                         }
                     }
                 }
@@ -83,7 +86,7 @@ class CineViewOkhttp(
         }
     }
 
-    private fun parseMovieFromJson(json: JSONObject, context: Context): Filme {
+    private suspend fun parseMovieFromJson(json: JSONObject, context: Context): Filme {
         val nome = json.getString("Title")
         val cartazUrl = json.getString("Poster")
         val genero = json.getString("Genre")
@@ -107,7 +110,7 @@ class CineViewOkhttp(
         }
 
         val imageUrl = cartazUrl
-        var filme = Filme(nome,Bitmap.createBitmap(1, 1, Bitmap.Config.ARGB_8888),genero,sinopse,atores,dataLancamento,avaliacaoIMDB,votosIMDB,linkIMDB)
+        var filme = Filme("",Bitmap.createBitmap(1, 1, Bitmap.Config.ARGB_8888),"","","","",0.0,0,"")
 
         downloadImage(context, imageUrl) { bitmap ->
             filme = if (bitmap != null) {
@@ -116,6 +119,11 @@ class CineViewOkhttp(
                 Filme(nome, null, genero, sinopse, atores, dataLancamento, avaliacaoIMDB, votosIMDB, linkIMDB)
             }
         }
+
+        while (filme.nome == ""){
+            delay(100)
+        }
+
 
         return filme
     }
