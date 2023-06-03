@@ -17,7 +17,7 @@ import java.io.IOException
 class CineViewOkhttp(
     private val apiKey: String = "f7580d7a",
     private val client: OkHttpClient
-) :CineView() {
+) : CineView() {
 
     override fun searchMovie(title: String, context: Context, onFinished: (Result<Filme>) -> Unit) {
         val url = "http://www.omdbapi.com/?apikey=$apiKey&t=$title"

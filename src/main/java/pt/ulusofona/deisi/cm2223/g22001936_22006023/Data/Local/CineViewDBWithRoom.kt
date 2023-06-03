@@ -38,41 +38,39 @@ class CineViewDBWithRoom(private val registoFilmeDao: RegistoFilmeDao, private v
     override fun getFilmesRegistados(onFinished: (Result<List<RegistoFilme>>) -> Unit) {
         CoroutineScope(Dispatchers.IO).launch {
             val filmes = registoFilmeDao.getAll().map {
-            var filme = filmeDao.getFromId(it.filmeId)
-            var cinema = cinemaDao.getFromId(it.cinemaId)
-                        RegistoFilme(
-                            uuid = it.registoFilmeId,
-                            filme = Filme(
-                                filme.nome,
-                                filme.cartaz,
-                                filme.genero,
-                                filme.sinopse,
-                                filme.atores,
-                                filme.dataLancamento,
-                                filme.avaliacaoIMDB,
-                                filme.votosIMDB,
-                                filme.linkIMDB
-                            ),
-                            cinema = Cinema(
-                                cinema.id,
-                                cinema.name,
-                                cinema.provider,
-                                cinema.latitude,
-                                cinema.longitude,
-                                cinema.address,
-                                cinema.postcode,
-                                cinema.county,
-                                cinema.photos,
-                                cinema.ratings,
-                                cinema.hours,
-                            ),
-                            data = it.data,
-                            observacoes = it.observacoes,
-                            rating = it.rating,
-                            photos = it.photos
-                        )
-
-
+                var filme = filmeDao.getFromId(it.filmeId)
+                var cinema = cinemaDao.getFromId(it.cinemaId)
+                    RegistoFilme(
+                        uuid = it.registoFilmeId,
+                        filme = Filme(
+                            filme.nome,
+                            filme.cartaz,
+                            filme.genero,
+                            filme.sinopse,
+                            filme.atores,
+                            filme.dataLancamento,
+                            filme.avaliacaoIMDB,
+                            filme.votosIMDB,
+                            filme.linkIMDB
+                        ),
+                        cinema = Cinema(
+                            cinema.id,
+                            cinema.name,
+                            cinema.provider,
+                            cinema.latitude,
+                            cinema.longitude,
+                            cinema.address,
+                            cinema.postcode,
+                            cinema.county,
+                            cinema.photos,
+                            cinema.ratings,
+                            cinema.hours,
+                        ),
+                        data = it.data,
+                        observacoes = it.observacoes,
+                        rating = it.rating,
+                        photos = it.photos
+                    )
                 }
 
             onFinished(Result.success(filmes))

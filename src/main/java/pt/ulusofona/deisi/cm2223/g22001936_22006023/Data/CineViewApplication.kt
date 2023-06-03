@@ -12,7 +12,7 @@ class CineViewApplication : Application() {
     override fun onCreate() {
         super.onCreate()
         CineRepository.init(
-            local = CineViewDBWithRoom(CineViewDatabase.getInstance(this).registoFilmeDao()),
+            local = CineViewDBWithRoom(CineViewDatabase.getInstance(this).registoFilmeDao(), CineViewDatabase.getInstance(this).FilmeDao(), CineViewDatabase.getInstance(this).CinemaDao()),
             remote = CineViewOkhttp(client = OkHttpClient()),
             context = this
         )
