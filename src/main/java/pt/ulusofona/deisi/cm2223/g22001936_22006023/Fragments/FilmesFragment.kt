@@ -10,6 +10,8 @@ import android.widget.Toast
 import androidx.appcompat.app.AppCompatActivity
 import androidx.recyclerview.widget.LinearLayoutManager
 import pt.ulusofona.deisi.cm2223.g22001936_22006023.Adapters.FilmesAdapter
+import pt.ulusofona.deisi.cm2223.g22001936_22006023.Data.CineRepository
+import pt.ulusofona.deisi.cm2223.g22001936_22006023.Models.CineView
 import pt.ulusofona.deisi.cm2223.g22001936_22006023.NavigationManager
 import pt.ulusofona.deisi.cm2223.g22001936_22006023.Pipocas.RegistoFilmes
 import pt.ulusofona.deisi.cm2223.g22001936_22006023.databinding.FragmentFilmesBinding
@@ -50,9 +52,11 @@ class FilmesFragment : Fragment() {
 
         binding.rvFilmes.layoutManager = LinearLayoutManager(requireContext())
         binding.rvFilmes.adapter = adapter
-
-        val filmes = RegistoFilmes.registo_filmes
-        adapter.updateItems(filmes)
+        CineRepository.getInstance().getFilmesRegistados { result ->
+            if (result.isSuccess) {
+                adapter.updateItems(result.getOrDefault(mutableListOf()))
+            }
+        }
         
     }
 

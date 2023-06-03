@@ -17,16 +17,23 @@ class CineRepository private constructor(
     override fun getFilmesRegistados(onFinished: (Result<List<RegistoFilme>>) -> Unit) {
         if (ConnectivityUtil.isOnline(context)) {
             Log.i("APP", "O aplicativo está online. Obtendo filmes do servidor...")
-            remote.getFilmesRegistados { result ->
+            local.getFilmesRegistados { result ->
                 if (result.isSuccess) {
                     val filmes = result.getOrNull()!!
-                    Log.i("APP", "Obtidos ${filmes.size} filmes do servidor")
-                    local.clearAllFilmesRegistados {
-                        Log.i("APP", "Banco de dados limpo")
-                        local.insertFilmesRegistados(filmes) {
-                            onFinished(Result.success(filmes))
+                    filmes.map{
+                        remote.searchMovie(it.filme.nome){ result ->
+                            if(result.isSuccess){
+                                it.filme = result.getOrNull()!!
+                                local.clearFilmeRegistadoById(it.filme.uuid) {
+                                    Log.i("APP", "Banco de dados limpo")
+                                    local.insertFilmeRegistado(it) {}
+                                }
+                            }
                         }
+
                     }
+                    Log.i("APP", "Obtidos ${filmes.size} filmes do servidor")
+                    onFinished(Result.success(filmes))
                 } else {
                     Log.w("APP", "Erro ao obter filmes do servidor...")
                     onFinished(result)  // propagar a falha remota
@@ -42,11 +49,17 @@ class CineRepository private constructor(
         throw Exception("Operação não permitida")
     }
 
-    override fun clearAllFilmesRegistados(onFinished: () -> Unit) {
+    override fun insertFilmeRegistado(filme: RegistoFilme, onFinished: () -> Unit) {
+        local.insertFilmeRegistado(filme) {
+            onFinished()
+        }
+    }
+
+    override fun clearFilmeRegistadoById(id: String, onFinished: () -> Unit) {
         throw Exception("Operação não permitida")
     }
 
-    override fun searchMovie(title: String, context: Context, onFinished: (Result<Filme>) -> Unit) {
+    override fun searchMovie(title: String, onFinished: (Result<Filme>) -> Unit) {
         throw Exception("Operação não permitida")
     }
 

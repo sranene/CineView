@@ -17,9 +17,9 @@ interface RegistoFilmeDao {
 
     @Query("SELECT * FROM registoFilme ORDER BY data ASC")
     fun getAll(): List<RegistoFilmeDB>
-
-    @Query("DELETE FROM registoFilme")
-    suspend fun deleteAll()
+    
+    @Query("DELETE FROM registoFilme WHERE filmeId = :id")
+    suspend fun delete(id: String)
 
     @Query("SELECT * FROM registoFilme ORDER BY data DESC LIMIT 1")
     fun getLastEntry(): RegistoFilmeDB?

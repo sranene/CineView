@@ -1,4 +1,5 @@
 package pt.ulusofona.deisi.cm2223.g22001936_22006023.Data.Local
+import android.annotation.SuppressLint
 import android.content.Context
 import android.util.Log
 import kotlinx.coroutines.CoroutineScope
@@ -33,6 +34,10 @@ class CineViewDBWithRoom(private val registoFilmeDao: RegistoFilmeDao, private v
             }
             onFinished()
         }
+    }
+
+    override fun searchMovie(title: String, onFinished: (Result<Filme>) -> Unit) {
+        TODO("Not yet implemented")
     }
 
     override fun getFilmesRegistados(onFinished: (Result<List<RegistoFilme>>) -> Unit) {
@@ -77,14 +82,29 @@ class CineViewDBWithRoom(private val registoFilmeDao: RegistoFilmeDao, private v
         }
     }
 
-    override fun clearAllFilmesRegistados(onFinished: () -> Unit) {
+    override fun clearFilmeRegistadoById(id: String, onFinished: () -> Unit) {
         CoroutineScope(Dispatchers.IO).launch {
-            registoFilmeDao.deleteAll()
+            registoFilmeDao.delete(id)
             onFinished()
         }
     }
 
-    override fun searchMovie(title: String, context: Context, onFinished: (Result<Filme>) -> Unit) {
-        throw Exception("Operação não permitida")
+    
+    override fun insertFilmeRegistado(filme: RegistoFilme, onFinished: () -> Unit) {
+        CoroutineScope(Dispatchers.IO).launch {
+            var registofilme = RegistoFilmeDB(
+                                    registoFilmeId = filme.uuid,
+                                    filmeId = filme.filme.uuid,
+                                    cinemaId = filme.cinema.id,
+                                    data = filme.data,
+                                    observacoes = filme.observacoes,
+                                    rating = filme.rating,
+                                    photos = filme.photos
+                                )
+            registoFilmeDao.insert(registofilme)
+            Log.i("APP", "Inserido ${registofilme.filmeId} no banco de dados")
+            
+            onFinished()
+        }
     }
 }

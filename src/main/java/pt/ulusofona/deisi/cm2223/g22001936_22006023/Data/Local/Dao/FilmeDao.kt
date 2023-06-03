@@ -22,6 +22,9 @@ interface FilmeDao {
     @Query("DELETE FROM Filme")
     suspend fun deleteAll()
 
+    @Query("DELETE FROM Filme WHERE uuid = :id")
+    suspend fun delete(id: String)
+
     //@Query("SELECT * FROM Filme ORDER BY data DESC LIMIT 1")
     //fun getLastEntry(): FilmeDB?
 

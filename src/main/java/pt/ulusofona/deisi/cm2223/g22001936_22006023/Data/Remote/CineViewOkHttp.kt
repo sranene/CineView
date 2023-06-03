@@ -1,5 +1,4 @@
 package pt.ulusofona.deisi.cm2223.g22001936_22006023.Data
-import android.content.Context
 import android.graphics.Bitmap
 import android.graphics.drawable.Drawable
 import com.squareup.picasso.Picasso
@@ -19,7 +18,7 @@ class CineViewOkhttp(
     private val client: OkHttpClient
 ) : CineView() {
 
-    override fun searchMovie(title: String, context: Context, onFinished: (Result<Filme>) -> Unit) {
+    override fun searchMovie(title: String, onFinished: (Result<Filme>) -> Unit) {
         val url = "http://www.omdbapi.com/?apikey=$apiKey&t=$title"
 
         val request = Request.Builder()
@@ -44,7 +43,7 @@ class CineViewOkhttp(
                             onFinished(Result.failure(IOException(errorMessage)))
                         } else {
                             CoroutineScope(Dispatchers.Main).launch {
-                            val movie = parseMovieFromJson(jsonResponse, context)
+                            val movie = parseMovieFromJson(jsonResponse)
                             onFinished(Result.success(movie))
                             }
                         }
@@ -58,7 +57,11 @@ class CineViewOkhttp(
         throw Exception("Operação não permitida")
     }
 
-    override fun clearAllFilmesRegistados(onFinished: () -> Unit) {
+    override fun insertFilmeRegistado(filme: RegistoFilme, onFinished: () -> Unit) {
+        throw Exception("Operação não permitida")
+    }
+
+    override fun clearFilmeRegistadoById(id: String, onFinished: () -> Unit) {
         throw Exception("Operação não permitida")
     }
 
@@ -68,7 +71,7 @@ class CineViewOkhttp(
 
 
 
-    private fun downloadImage(context: Context, imageUrl: String, onImageDownloaded: (Bitmap?) -> Unit) {
+    private fun downloadImage(imageUrl: String, onImageDownloaded: (Bitmap?) -> Unit) {
         CoroutineScope(Dispatchers.Main).launch {
             Picasso.get()
                 .load(imageUrl)
@@ -86,7 +89,7 @@ class CineViewOkhttp(
         }
     }
 
-    private suspend fun parseMovieFromJson(json: JSONObject, context: Context): Filme {
+    private suspend fun parseMovieFromJson(json: JSONObject): Filme {
         val nome = json.getString("Title")
         val cartazUrl = json.getString("Poster")
         val genero = json.getString("Genre")
@@ -112,7 +115,7 @@ class CineViewOkhttp(
         val imageUrl = cartazUrl
         var filme = Filme("",Bitmap.createBitmap(1, 1, Bitmap.Config.ARGB_8888),"","","","",0.0,0,"")
 
-        downloadImage(context, imageUrl) { bitmap ->
+        downloadImage(imageUrl) { bitmap ->
             filme = if (bitmap != null) {
                 Filme(nome, bitmap, genero, sinopse, atores, dataLancamento, avaliacaoIMDB, votosIMDB, linkIMDB)
             } else {

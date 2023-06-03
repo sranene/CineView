@@ -31,7 +31,9 @@ import okhttp3.OkHttpClient
 import pt.ulusofona.deisi.cm2223.g22001936_22006023.Models.Cinema
 import pt.ulusofona.deisi.cm2223.g22001936_22006023.Models.Filme
 import pt.ulusofona.deisi.cm2223.g22001936_22006023.Adapters.PhotoAdapter
+import pt.ulusofona.deisi.cm2223.g22001936_22006023.Data.CineRepository
 import pt.ulusofona.deisi.cm2223.g22001936_22006023.Data.CineViewOkhttp
+import pt.ulusofona.deisi.cm2223.g22001936_22006023.Models.RegistoFilme
 import pt.ulusofona.deisi.cm2223.g22001936_22006023.Pipocas.Cinemas
 import pt.ulusofona.deisi.cm2223.g22001936_22006023.Pipocas.Filmes
 import pt.ulusofona.deisi.cm2223.g22001936_22006023.Pipocas.RegistoFilmes
@@ -85,7 +87,7 @@ class RegistarFilmeFragment : Fragment() {
             val actvFilme = binding.autoCompleteTextViewFilmes
             actvFilme.threshold = 1
             CoroutineScope(Dispatchers.IO).launch {
-                cineView.searchMovie(text.toString(), requireContext()){ result ->
+                cineView.searchMovie(text.toString()){ result ->
                     if(result.isSuccess) {
                         CoroutineScope(Dispatchers.Main).launch {
                             binding.filmeLayout.error = null
@@ -186,16 +188,20 @@ class RegistarFilmeFragment : Fragment() {
     }
    private fun submeter(){
         if(checkValues()){
-            RegistoFilmes.submit(
-                dropDownFilme[0],
-                Cinemas.pegarCinema(binding.autoCompleteTextViewCinemas.text.toString())!!, binding.ratingBar.rating.toInt(), binding.dataEdit.text.toString(),photoList, binding.observacoesEdit.text.toString())
-            Filmes.add(dropDownFilme[0])
-            Toast.makeText(context, "Registo submetido com sucesso!", Toast.LENGTH_LONG).show()
-            binding.observacoesEdit.setText("")
-            binding.autoCompleteTextViewFilmes.setText("")
-            binding.autoCompleteTextViewCinemas.setText("")
-            binding.ratingBar.rating = 5f
-            photoList.clear()
+        CoroutineScope(Dispatchers.Main).launch{
+            CineRepository.getInstance().insertFilmeRegistado(
+                RegistoFilme(dropDownFilme[0],
+            Cinemas.pegarCinema(binding.autoCompleteTextViewCinemas.text.toString())!!, binding.ratingBar.rating.toInt(), binding.dataEdit.text.toString(),photoList, binding.observacoesEdit.text.toString())
+            ){
+                Filmes.add(dropDownFilme[0])
+                Toast.makeText(context, "Registo submetido com sucesso!", Toast.LENGTH_LONG).show()
+                binding.observacoesEdit.setText("")
+                binding.autoCompleteTextViewFilmes.setText("")
+                binding.autoCompleteTextViewCinemas.setText("")
+                binding.ratingBar.rating = 5f
+                photoList.clear()
+            }
+         }
         }else{
             Toast.makeText(context, "Erro ao submeter verifique se preencheu bem o formulário", Toast.LENGTH_LONG).show()
         }
