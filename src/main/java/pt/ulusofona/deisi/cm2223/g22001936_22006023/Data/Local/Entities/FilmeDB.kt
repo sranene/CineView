@@ -11,7 +11,7 @@ import androidx.room.TypeConverters
 data class FilmeDB(
     @PrimaryKey val uuid: String,
     @ColumnInfo(name = "nome") val nome: String,
-    @ColumnInfo(name = "cartaz") val cartaz: Bitmap?,
+    @ColumnInfo(name = "cartaz") val cartaz: ByteArray?,
     @ColumnInfo(name = "genero") val genero: String,
     @ColumnInfo(name = "sinopse") val sinopse: String,
     @ColumnInfo(name = "atores") val atores: String,

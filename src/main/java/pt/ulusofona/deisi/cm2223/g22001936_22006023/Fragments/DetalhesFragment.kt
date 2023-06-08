@@ -81,8 +81,10 @@ class DetalhesFragment : Fragment() {
         }
     }
     private fun placeData(ui: RegistoFilme) {
-        val photoList: List<Bitmap> = ui.photos
+        val photoList: List<Bitmap?> = ui.photos
+        Log.i("APP", "Meti o photoList")
         val adapter = PhotoAdapter(photoList)
+        Log.i("APP", "Meti o photoAdapter")
         (requireActivity() as AppCompatActivity).supportActionBar?.title = ui.filme.nome
 
         //val imgFile = File(ui.filme.cartaz)
@@ -94,9 +96,10 @@ class DetalhesFragment : Fragment() {
        // Picasso.get().load(Uri.fromFile(file)).into(binding.ivCartaz)
 
 
-
-
+        var cartazteste = ui.filme.cartaz
+        Log.i("APP", "vou agora por o Cartaz")
         binding.ivCartaz.setImageBitmap(ui.filme.cartaz)
+        Log.i("APP", "Meti o cartaz")
 
         //binding.ivCartaz.setImageResource(ui.filme.cartaz)
 

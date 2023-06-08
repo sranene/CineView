@@ -1,9 +1,12 @@
 package pt.ulusofona.deisi.cm2223.g22001936_22006023.Data.Local.Entities
 import android.graphics.Bitmap
+import android.graphics.BitmapFactory
 import androidx.room.*
 import com.google.gson.Gson
 import com.google.gson.reflect.TypeToken
-import java.util.*
+import org.json.JSONArray
+import java.io.ByteArrayOutputStream
+import android.util.*
 
 
 @Entity(tableName = "registoFilme")
@@ -14,7 +17,7 @@ data class RegistoFilmeDB(
     @ColumnInfo(name = "cinemaId") val cinemaId: Int,
     @ColumnInfo(name = "rating") val rating: Int,
     @ColumnInfo(name = "data") val data: String,
-    @ColumnInfo(name = "photos") val photos : List<Bitmap>,
+    @ColumnInfo(name = "photos") val photos : List<ByteArray?>,
     @ColumnInfo(name = "observacoes") val observacoes : String)
 
 
@@ -70,12 +73,55 @@ class BitmapListConverter {
         val gson = Gson()
         return gson.toJson(stringList)
     }
+    @TypeConverter
+    fun fromByteArrayToBitmap(byteArray: ByteArray): Bitmap {
+        return BitmapFactory.decodeByteArray(byteArray, 0, byteArray.size)
+    }
+
+
+
+    @TypeConverter
+    fun fromByteArrayList(byteArrayList: List<ByteArray>): String {
+        val jsonArray = JSONArray()
+        for (byteArray in byteArrayList) {
+            jsonArray.put(Base64.encodeToString(byteArray, Base64.DEFAULT))
+        }
+        return jsonArray.toString()
+    }
+    @TypeConverter
+    fun toByteArrayList(byteArrayString: String): List<ByteArray> {
+        val jsonArray = JSONArray(byteArrayString)
+        val byteArrayList = mutableListOf<ByteArray>()
+        for (i in 0 until jsonArray.length()) {
+            val byteArrayString = jsonArray.getString(i)
+            val byteArray = Base64.decode(byteArrayString, Base64.DEFAULT)
+            byteArrayList.add(byteArray)
+        }
+        return byteArrayList
+    }
+    @TypeConverter
+    fun fromBitmapToByteArray(bitmap: Bitmap): ByteArray {
+        val outputStream = ByteArrayOutputStream()
+        bitmap.compress(Bitmap.CompressFormat.PNG, 100, outputStream)
+        return outputStream.toByteArray()
+    }
 
     @TypeConverter
     fun toStringList(string: String): List<String> {
         val gson = Gson()
         val type = object : TypeToken<List<String>>() {}.type
         return gson.fromJson(string, type)
+    }
+
+
+    fun bitmapToByteArray(bitmap: Bitmap?): ByteArray? {
+        val stream = ByteArrayOutputStream()
+        bitmap?.compress(Bitmap.CompressFormat.PNG, 100, stream)
+        return stream.toByteArray()
+    }
+
+    fun byteArrayToBitmap(byteArray: ByteArray): Bitmap? {
+        return BitmapFactory.decodeByteArray(byteArray, 0, byteArray.size)
     }
     @TypeConverter
     fun fromBitmapList(bitmapList: List<Bitmap>): String {
