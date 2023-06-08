@@ -28,12 +28,14 @@ import com.google.android.material.textfield.TextInputEditText
 import kotlinx.coroutines.CoroutineScope
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.launch
+import okhttp3.Connection
 import okhttp3.OkHttpClient
 import pt.ulusofona.deisi.cm2223.g22001936_22006023.Models.Cinema
 import pt.ulusofona.deisi.cm2223.g22001936_22006023.Models.Filme
 import pt.ulusofona.deisi.cm2223.g22001936_22006023.Adapters.PhotoAdapter
 import pt.ulusofona.deisi.cm2223.g22001936_22006023.Data.CineRepository
 import pt.ulusofona.deisi.cm2223.g22001936_22006023.Data.CineViewOkhttp
+import pt.ulusofona.deisi.cm2223.g22001936_22006023.Data.Remote.ConnectivityUtil
 import pt.ulusofona.deisi.cm2223.g22001936_22006023.Models.RegistoFilme
 import pt.ulusofona.deisi.cm2223.g22001936_22006023.Pipocas.Cinemas
 import pt.ulusofona.deisi.cm2223.g22001936_22006023.Pipocas.Filmes
@@ -218,7 +220,13 @@ class RegistarFilmeFragment : Fragment() {
             }
 
         }else{
-            Toast.makeText(context, "Erro ao submeter verifique se preencheu bem o formulário", Toast.LENGTH_LONG).show()
+            var toast = "Erro ao submeter. "
+            toast += if(ConnectivityUtil.isOnline(requireContext())) {
+                "Verifique se preencheu bem o formulário"
+            } else {
+                "Não está conectado à internet."
+            }
+            Toast.makeText(context, toast, Toast.LENGTH_LONG).show()
         }
     }
 

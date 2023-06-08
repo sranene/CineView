@@ -6,6 +6,7 @@ import android.graphics.Bitmap
 import android.graphics.Canvas
 import android.location.Geocoder
 import android.os.Bundle
+import android.util.Log
 import androidx.fragment.app.Fragment
 import android.view.LayoutInflater
 import android.view.View
@@ -23,6 +24,7 @@ import kotlinx.coroutines.launch
 import pt.ulusofona.deisi.cm2223.g22001936_22006023.Data.CineRepository
 import pt.ulusofona.deisi.cm2223.g22001936_22006023.Location.CineViewLocation
 import pt.ulusofona.deisi.cm2223.g22001936_22006023.Location.OnLocationChangedListener
+import pt.ulusofona.deisi.cm2223.g22001936_22006023.Models.RegistoFilme
 import pt.ulusofona.deisi.cm2223.g22001936_22006023.NavigationManager
 import pt.ulusofona.deisi.cm2223.g22001936_22006023.R
 import pt.ulusofona.deisi.cm2223.g22001936_22006023.databinding.FragmentMapBinding
@@ -49,7 +51,6 @@ class MapFragment : Fragment(), OnLocationChangedListener {
             CineRepository.getInstance().getFilmesRegistados { result ->
 
                 if (result.isSuccess) {
-
                     var registos = result.getOrDefault(mutableListOf())
                     registos.forEach {
                         val icon = getMarkerIconByRating(it.rating)
@@ -60,17 +61,32 @@ class MapFragment : Fragment(), OnLocationChangedListener {
                             )
                         }
                         CoroutineScope(Dispatchers.Main).launch {
-                            map.addMarker(MarkerOptions()
+                            val markerOptions = MarkerOptions()
                                 .position(LatLng(it.cinema.latitude.toDouble(), it.cinema.longitude.toDouble()))
-                                .title(it.filme.nome)
-                                .snippet("Rating: " + it.rating + ", Cinema: " + it.cinema.name)
+                                .title(it.filme.nome + "  " + it.rating + "★")
+                                .snippet("Cinema: " + it.cinema.name)
                                 .icon(markerBitmapDescriptor)
-                            )
+
+                            var marker = map.addMarker(markerOptions)
+                            marker?.tag = it
+                            // Define o listener de clique no marcador
+                            map.setOnInfoWindowClickListener { clickedMarker ->
+                                val clickedRegisto = clickedMarker.tag as? RegistoFilme
+                                if (clickedRegisto != null) {
+                                    Log.i("APP", "u here?")
+                                    NavigationManager.goToDetalhesFragment(parentFragmentManager, it.uuid)
+                                }
+                                // Retorna false para permitir que o comportamento padrão (info window) seja executado
+                                false
+                            }
                         }
+
                     }
                 }
             }
+
         }
+
         binding.fab.setOnClickListener { view ->
             NavigationManager.goToFilmesFragment(parentFragmentManager)
         }
@@ -120,8 +136,8 @@ class MapFragment : Fragment(), OnLocationChangedListener {
             in 3..4 -> R.drawable.marker_fraco
             in 5..6 -> R.drawable.marker_medio
             in 7..8 -> R.drawable.marker_bom
-            in 9..10 -> R.drawable.marker_good
-            else -> R.drawable.marker_excelente
+            in 9..10 -> R.drawable.marker_excelente
+            else -> R.drawable.marker_good
         }
     }
     private fun getBitmapFromVector(context: Context, vectorResId: Int): Bitmap? {
