@@ -11,8 +11,12 @@ import android.widget.Toast
 import androidx.appcompat.app.AppCompatActivity
 import androidx.core.widget.doOnTextChanged
 import androidx.recyclerview.widget.LinearLayoutManager
+import kotlinx.coroutines.CoroutineScope
+import kotlinx.coroutines.Dispatchers
+import kotlinx.coroutines.launch
 import pt.ulusofona.deisi.cm2223.g22001936_22006023.Adapters.FilmesAdapter
 import pt.ulusofona.deisi.cm2223.g22001936_22006023.Adapters.PosterAdapter
+import pt.ulusofona.deisi.cm2223.g22001936_22006023.Data.CineRepository
 import pt.ulusofona.deisi.cm2223.g22001936_22006023.Models.Filme
 import pt.ulusofona.deisi.cm2223.g22001936_22006023.NavigationManager
 import pt.ulusofona.deisi.cm2223.g22001936_22006023.Pipocas.Cinemas
@@ -36,32 +40,56 @@ class ExtraFragment : Fragment() {
         binding = FragmentExtraBinding.inflate(inflater, container, false)
         (requireActivity() as AppCompatActivity).supportActionBar?.title = "Pesquisa Por Atores"
 
-        val adapterAtores: ArrayAdapter<String> =
-            ArrayAdapter<String>(requireContext(), R.layout.select_dialog_item, Filmes.pegarAtores())
+        var adapterAtores : ArrayAdapter<String> = ArrayAdapter<String>(requireContext(), R.layout.select_dialog_item, mutableListOf())
 
-        val actvAtores = binding.autoCompleteTextViewAtores
+        CineRepository.getInstance().getAllAtores { result ->
+            if (result.isSuccess) {
+                val atores = result.getOrDefault("").split(", ")
 
-        actvAtores.threshold = 1 //will start working from first character
+                CoroutineScope(Dispatchers.Main).launch {
+                    adapterAtores = ArrayAdapter<String>(requireContext(), R.layout.select_dialog_item, atores)
+                    val actvAtores = binding.autoCompleteTextViewAtores
 
-        actvAtores.setAdapter(adapterAtores)
+                    actvAtores.threshold = 1 //will start working from first character
+
+                    actvAtores.setAdapter(adapterAtores)
+                }
+            }
+        }
+
 
         binding.atorLayout.setEndIconOnClickListener {
             if(binding.autoCompleteTextViewAtores.text.toString() != "" && binding.atorLayout.error == null){
-                var filmes : List<Filme> = Filmes.pegarFilmesAtor(binding.autoCompleteTextViewAtores.text.toString())
 
-                binding.rvPoster.layoutManager = LinearLayoutManager(requireContext(),LinearLayoutManager.HORIZONTAL,false)
-                binding.rvPoster.adapter = adapter
+                var filmes : List<Filme>
+                CineRepository.getInstance().getFilmesComAtor(binding.autoCompleteTextViewAtores.text.toString()) { result ->
+                    if (result.isSuccess) {
+                        CoroutineScope(Dispatchers.Main).launch {
+                            filmes = result.getOrDefault(mutableListOf())
 
-                adapter.updateItems(filmes)
+                            binding.rvPoster.layoutManager = LinearLayoutManager(requireContext(),LinearLayoutManager.HORIZONTAL,false)
+                            binding.rvPoster.adapter = adapter
+
+                            adapter.updateItems(filmes)
+                        }
+                    }
+                }
+
             }
         }
 
         binding.autoCompleteTextViewAtores.doOnTextChanged { text, start, before, count ->
 
-            if(Filmes.procurarAtor(text.toString())){
-                binding.atorLayout.error = null
-            }else{
-                binding.atorLayout.error = "Ator inexistente, por favor escolha um da lista"
+            CineRepository.getInstance().hasFilmesComAtor(text.toString()) { result ->
+                if (result.isSuccess) {
+                    CoroutineScope(Dispatchers.Main).launch {
+                        if(result.getOrDefault(false)){
+                            binding.atorLayout.error = null
+                        } else {
+                            binding.atorLayout.error = "Ator inexistente, por favor escolha um da lista"
+                        }
+                    }
+                }
             }
         }
 

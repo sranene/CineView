@@ -2,6 +2,7 @@ package pt.ulusofona.deisi.cm2223.g22001936_22006023.Data
 
 import android.content.Context
 import android.util.Log
+import pt.ulusofona.deisi.cm2223.g22001936_22006023.Data.Local.Entities.FilmeDB
 import pt.ulusofona.deisi.cm2223.g22001936_22006023.Data.Remote.ConnectivityUtil
 import pt.ulusofona.deisi.cm2223.g22001936_22006023.Models.CineView
 import pt.ulusofona.deisi.cm2223.g22001936_22006023.Models.Filme
@@ -70,6 +71,23 @@ class CineRepository private constructor(
     override fun getUltimosRegistos(onFinished: (Result<List<RegistoFilme>>) -> Unit) {
         local.getUltimosRegistos(onFinished)
     }
+
+    override fun getFilmesComMaisVotos(onFinished: (Result<List<Filme>>) -> Unit) {
+        local.getFilmesComMaisVotos(onFinished)
+    }
+
+    override fun getAllAtores(onFinished: (Result<String>) -> Unit) {
+        local.getAllAtores(onFinished)
+    }
+
+    override fun getFilmesComAtor(ator: String, onFinished: (Result<List<Filme>>) -> Unit) {
+        local.getFilmesComAtor(ator, onFinished)
+    }
+
+    override fun hasFilmesComAtor(ator: String, onFinished: (Result<Boolean>) -> Unit) {
+        local.hasFilmesComAtor(ator, onFinished)
+    }
+
     companion object {
         private var instance: CineRepository? = null
 

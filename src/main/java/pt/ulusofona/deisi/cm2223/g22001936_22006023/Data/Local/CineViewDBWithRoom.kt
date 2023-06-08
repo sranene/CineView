@@ -50,7 +50,7 @@ class CineViewDBWithRoom(private val registoFilmeDao: RegistoFilmeDao, private v
                 ))
             }
             filmes.map {
-                var photos = it.photos.map{
+                val photos = it.photos.map{
                         bitmap ->  bitmapToByteArray(bitmap)
                 }
                 RegistoFilmeDB(
@@ -88,14 +88,14 @@ class CineViewDBWithRoom(private val registoFilmeDao: RegistoFilmeDao, private v
 
     override fun getFilmesRegistados(onFinished: (Result<List<RegistoFilme>>) -> Unit) {
         CoroutineScope(Dispatchers.IO).launch {
-            var filmesRegistados : MutableList<RegistoFilme> = mutableListOf()
+            val filmesRegistados : MutableList<RegistoFilme> = mutableListOf()
             val filmes = registoFilmeDao.getAll()
             filmes.forEach {
-                var photos = it.photos.map{
+                val photos = it.photos.map{
                         bitmap ->  byteArrayToBitmap(bitmap)
                 }
-                var filme = filmeDao.getFromId(it.filmeId)
-                var cinema = cinemaDao.getFromId(it.cinemaId)
+                val filme = filmeDao.getFromId(it.filmeId)
+                val cinema = cinemaDao.getFromId(it.cinemaId)
                 filmesRegistados.add(RegistoFilme(
                     uuid = it.registoFilmeId,
                     filme = Filme(
@@ -142,14 +142,14 @@ class CineViewDBWithRoom(private val registoFilmeDao: RegistoFilmeDao, private v
 
     override fun getFilmeRegistadoById(id:String,onFinished: (Result<RegistoFilme>) -> Unit){
         CoroutineScope(Dispatchers.IO).launch{
-            var registoFilme = registoFilmeDao.getFromId(id)
-            var filme = filmeDao.getFromId(registoFilme.filmeId)
-            var cinema = cinemaDao.getFromId(registoFilme.cinemaId)
+            val registoFilme = registoFilmeDao.getFromId(id)
+            val filme = filmeDao.getFromId(registoFilme.filmeId)
+            val cinema = cinemaDao.getFromId(registoFilme.cinemaId)
             Log.i("App","Vou pegar agora filme cartaz")
-            var photos = registoFilme.photos.map{
+            val photos = registoFilme.photos.map{
                     bitmap ->  byteArrayToBitmap(bitmap)
             }
-            var registo = RegistoFilme(
+            val registo = RegistoFilme(
                 uuid = registoFilme.registoFilmeId,
                 filme = Filme(
                     filme.nome,
@@ -188,11 +188,11 @@ class CineViewDBWithRoom(private val registoFilmeDao: RegistoFilmeDao, private v
 
     override fun getUltimosRegistos(onFinished: (Result<List<RegistoFilme>>) -> Unit) {
         CoroutineScope(Dispatchers.IO).launch{
-            var registoFilme = registoFilmeDao.getUltimosRegistos()
-            var registosFilme = registoFilme.map {
-                var filme = filmeDao.getFromId(it.filmeId)
-                var cinema = cinemaDao.getFromId(it.cinemaId)
-                var photos = it.photos.map{
+            val registoFilme = registoFilmeDao.getUltimosRegistos()
+            val registosFilme = registoFilme.map {
+                val filme = filmeDao.getFromId(it.filmeId)
+                val cinema = cinemaDao.getFromId(it.cinemaId)
+                val photos = it.photos.map{
                         bitmap ->  byteArrayToBitmap(bitmap)
                 }
                 RegistoFilme(
@@ -231,12 +231,66 @@ class CineViewDBWithRoom(private val registoFilmeDao: RegistoFilmeDao, private v
             onFinished(Result.success(registosFilme))
         }
     }
+
+    override fun getAllAtores(onFinished: (Result<String>) -> Unit) {
+        CoroutineScope(Dispatchers.IO).launch{
+            val atores = filmeDao.getAllAtores()
+            onFinished(Result.success(atores))
+        }
+    }
+
+    override fun getFilmesComAtor(ator: String, onFinished: (Result<List<Filme>>) -> Unit) {
+        CoroutineScope(Dispatchers.IO).launch{
+            val filme = filmeDao.getFilmesComAtor(ator)
+            val filmes = filme.map {
+                Filme(
+                    it.nome,
+                    byteArrayToBitmap(it.cartaz),
+                    it.genero,
+                    it.sinopse,
+                    it.atores,
+                    it.dataLancamento,
+                    it.avaliacaoIMDB,
+                    it.votosIMDB,
+                    it.linkIMDB
+                )
+            }
+            onFinished(Result.success(filmes))
+        }
+    }
+
+    override fun hasFilmesComAtor(ator: String, onFinished: (Result<Boolean>) -> Unit) {
+        CoroutineScope(Dispatchers.IO).launch{
+            val bool = filmeDao.hasFilmesComAtor(ator)
+            onFinished(Result.success(bool))
+        }
+    }
+
+    override fun getFilmesComMaisVotos(onFinished: (Result<List<Filme>>) -> Unit) {
+        CoroutineScope(Dispatchers.IO).launch{
+            val filme = filmeDao.getFilmesComMaisVotos()
+            val filmes = filme.map {
+                Filme(
+                    it.nome,
+                    byteArrayToBitmap(it.cartaz),
+                    it.genero,
+                    it.sinopse,
+                    it.atores,
+                    it.dataLancamento,
+                    it.avaliacaoIMDB,
+                    it.votosIMDB,
+                    it.linkIMDB
+                )
+            }
+            onFinished(Result.success(filmes))
+        }
+    }
     override fun insertFilmeRegistado(filme: RegistoFilme, onFinished: () -> Unit) {
         CoroutineScope(Dispatchers.IO).launch {
-            var photos = filme.photos.map{
+            val photos = filme.photos.map{
                     bitmap ->  bitmapToByteArray(bitmap)
             }
-            var registofilme = RegistoFilmeDB(
+            val registofilme = RegistoFilmeDB(
                                     registoFilmeId = filme.uuid,
                                     filmeId = filme.filme.uuid,
                                     cinemaId = filme.cinema.id,
@@ -246,7 +300,7 @@ class CineViewDBWithRoom(private val registoFilmeDao: RegistoFilmeDao, private v
                                     photos = photos
                                 )
             registoFilmeDao.insert(registofilme)
-            var filmeinserir = FilmeDB(
+            val filmeinserir = FilmeDB(
                 uuid = filme.filme.uuid,
                 nome = filme.filme.nome,
                 cartaz = bitmapToByteArray(filme.filme.cartaz),

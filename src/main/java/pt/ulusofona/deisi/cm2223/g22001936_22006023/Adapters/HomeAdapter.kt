@@ -24,7 +24,7 @@ class HomeAdapter(private var items: List<Filme> = listOf()) : RecyclerView.Adap
     override fun onBindViewHolder(holder: HomeViewHolder, position: Int) { //this mf
 
         holder.binding.filmeName.text = items[position].nome
-        holder.binding.dataLancamento.text = "Data de Lançamento ${items[position].dataLancamento}"
+        holder.binding.dataLancamento.text = "LanÃ§amento: ${items[position].dataLancamento}"
         holder.binding.ratingNumber.text = items[position].avaliacaoIMDB.toString()
         holder.binding.filmeVotos.text = "${items[position].votosIMBD} votos"
     }
@@ -37,6 +37,6 @@ class HomeAdapter(private var items: List<Filme> = listOf()) : RecyclerView.Adap
     }
 
 
-    // Implementação do HistoryAdapter
+    // Implementaï¿½ï¿½o do HistoryAdapter
 
 }

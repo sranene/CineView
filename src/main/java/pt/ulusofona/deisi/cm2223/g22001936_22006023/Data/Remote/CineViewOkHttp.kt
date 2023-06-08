@@ -8,6 +8,7 @@ import kotlinx.coroutines.delay
 import kotlinx.coroutines.launch
 import okhttp3.*
 import org.json.JSONObject
+import pt.ulusofona.deisi.cm2223.g22001936_22006023.Data.Local.Entities.FilmeDB
 import pt.ulusofona.deisi.cm2223.g22001936_22006023.Models.CineView
 import pt.ulusofona.deisi.cm2223.g22001936_22006023.Models.Filme
 import pt.ulusofona.deisi.cm2223.g22001936_22006023.Models.RegistoFilme
@@ -74,7 +75,21 @@ class CineViewOkhttp(
     override fun getUltimosRegistos(onFinished: (Result<List<RegistoFilme>>) -> Unit) {
         throw Exception("Operação não permitida")
     }
+    override fun getFilmesComMaisVotos(onFinished: (Result<List<Filme>>) -> Unit) {
+        throw Exception("Operação não permitida")
+    }
 
+    override fun getAllAtores(onFinished: (Result<String>) -> Unit) {
+        throw Exception("Operação não permitida")
+    }
+
+    override fun getFilmesComAtor(ator: String, onFinished: (Result<List<Filme>>) -> Unit) {
+        throw Exception("Operação não permitida")
+    }
+
+    override fun hasFilmesComAtor(ator: String, onFinished: (Result<Boolean>) -> Unit) {
+        throw Exception("Operação não permitida")
+    }
     private fun downloadImage(imageUrl: String, onImageDownloaded: (Bitmap?) -> Unit) {
         CoroutineScope(Dispatchers.Main).launch {
             Picasso.get()

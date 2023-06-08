@@ -95,11 +95,10 @@ class DetalhesFragment : Fragment() {
 
        // Picasso.get().load(Uri.fromFile(file)).into(binding.ivCartaz)
 
+        Log.i("APP ATOR", ui.filme.atores)
 
-        var cartazteste = ui.filme.cartaz
-        Log.i("APP", "vou agora por o Cartaz")
         binding.ivCartaz.setImageBitmap(ui.filme.cartaz)
-        Log.i("APP", "Meti o cartaz")
+
 
         //binding.ivCartaz.setImageResource(ui.filme.cartaz)
 

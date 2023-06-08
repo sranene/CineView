@@ -48,7 +48,7 @@ class HomeFragment : Fragment() {
     override fun onStart() {
         super.onStart()
 
-        val ultimosRegistos = CineRepository.getInstance().getUltimosRegistos { result ->
+        CineRepository.getInstance().getUltimosRegistos { result ->
             CoroutineScope(Dispatchers.Main).launch {
                 if (result.isSuccess) {
                     adapterRegistos.updateItems(result.getOrDefault(mutableListOf()))
@@ -59,8 +59,13 @@ class HomeFragment : Fragment() {
         binding.rvUltimosRegistos.layoutManager = LinearLayoutManager(requireContext())
         binding.rvUltimosRegistos.adapter = adapterRegistos
 
-        val filmesMaisVistos = Filmes.pegarMaisVistos()
-        adapterFilmes.updateItems(filmesMaisVistos)
+        CineRepository.getInstance().getFilmesComMaisVotos { result ->
+            CoroutineScope(Dispatchers.Main).launch {
+                if (result.isSuccess) {
+                    adapterFilmes.updateItems(result.getOrDefault(mutableListOf()))
+                }
+            }
+        }
 
         binding.rvFilmesMaisVistos.layoutManager = LinearLayoutManager(requireContext())
         binding.rvFilmesMaisVistos.adapter = adapterFilmes
