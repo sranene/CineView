@@ -42,13 +42,15 @@ class MainActivity : AppCompatActivity() {
             val cinema = cinemas.getJSONObject(i)
             var ratingList : MutableList<Rating> = mutableListOf()
             var photoList : MutableList<String> = mutableListOf()
-            var logoUrl = ""
             var photos : JSONArray
             var ratings : JSONArray
             val cinemaid = cinema.getInt("cinema_id")
             val cinemaname = cinema.getString("cinema_name")
             val cinemaprovider = cinema.getString("cinema_provider")
-            logoUrl = cinema.optString("logo_url")
+            var logoUrl  = ""
+            if(cinema.has("logo_url")){
+                logoUrl  = cinema.getString("logo_url")
+            }
             val latitude = cinema.getDouble("latitude").toFloat()
             val longitude = cinema.getDouble("longitude").toFloat()
             val address = cinema.getString("address")
