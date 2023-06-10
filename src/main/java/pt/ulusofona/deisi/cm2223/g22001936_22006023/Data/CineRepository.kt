@@ -31,7 +31,7 @@ class CineRepository private constructor(
                     //            }
                     //        }
                     //    }
-//
+                    //
                     //}
                     Log.i("APP", "Obtidos ${filmes.size} filmes do servidor")
                     onFinished(Result.success(filmes))
@@ -52,7 +52,6 @@ class CineRepository private constructor(
 
     override fun insertFilmeRegistado(filme: RegistoFilme, onFinished: () -> Unit) {
         local.insertFilmeRegistado(filme) {
-            Log.i("Aoo","Inseri o pau na panela ${filme.filme.uuid}")
             onFinished()
         }
     }

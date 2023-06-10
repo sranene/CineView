@@ -9,3 +9,4 @@ class Cinema(var id: Int, var name:String, var provider: String, var latitude: F
     }
 
 }
+

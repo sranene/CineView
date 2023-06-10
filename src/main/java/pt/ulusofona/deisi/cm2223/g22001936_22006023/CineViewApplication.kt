@@ -1,12 +1,15 @@
 package pt.ulusofona.deisi.cm2223.g22001936_22006023
 
 import android.app.Application
+import android.content.res.Resources
 import android.util.Log
+import com.google.gson.Gson
 import okhttp3.OkHttpClient
 import pt.ulusofona.deisi.cm2223.g22001936_22006023.Data.CineRepository
 import pt.ulusofona.deisi.cm2223.g22001936_22006023.Data.CineViewOkhttp
 import pt.ulusofona.deisi.cm2223.g22001936_22006023.Data.Local.CineViewDBWithRoom
 import pt.ulusofona.deisi.cm2223.g22001936_22006023.Data.Local.CineViewDatabase
+import pt.ulusofona.deisi.cm2223.g22001936_22006023.Models.Cinema
 
 
 class CineViewApplication : Application() {
@@ -24,4 +27,7 @@ class CineViewApplication : Application() {
         )
         Log.i("APP", "Initialized repository")
     }
+
+
+
 }

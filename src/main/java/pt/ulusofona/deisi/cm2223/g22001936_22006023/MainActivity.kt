@@ -5,6 +5,7 @@ import android.content.DialogInterface
 import android.graphics.Color
 import android.os.Bundle
 import android.os.CountDownTimer
+import android.util.Log
 import android.view.LayoutInflater
 import android.view.Menu
 import android.view.MenuItem
@@ -12,6 +13,10 @@ import androidx.appcompat.app.ActionBarDrawerToggle
 import androidx.appcompat.app.AlertDialog
 import androidx.appcompat.app.AppCompatActivity
 import androidx.core.view.GravityCompat
+import com.google.gson.Gson
+import org.json.JSONArray
+import org.json.JSONObject
+import pt.ulusofona.deisi.cm2223.g22001936_22006023.Models.Cinema
 import pt.ulusofona.deisi.cm2223.g22001936_22006023.databinding.ActivityMainBinding
 import kotlin.Boolean
 import kotlin.Long
@@ -28,6 +33,45 @@ class MainActivity : AppCompatActivity() {
         binding = ActivityMainBinding.inflate(layoutInflater)
         setContentView(binding.root)
         NavigationManager.goToHomeFragment(supportFragmentManager)
+        val jsonContent = this.assets.open("cinemas.json").bufferedReader().use {
+            it.readText()
+        }
+        val cinemasJson = JSONObject(jsonContent)
+        val cinemas = cinemasJson.getJSONArray("cinemas") as JSONArray
+        Log.i("APP JSON",""+jsonContent)
+        for (i in 0 until cinemas.length()){
+            val cinema_id = cinemas.getJSONObject(i).get("cinema_id")
+            val cinema_name = cinemas.getJSONObject(i).get("cinema_name")
+            val cinema_provider = cinemas.getJSONObject(i).get("cinema_provider")
+            val latitude = cinemas.getJSONObject(i).get("latitude")
+            val longitude = cinemas.getJSONObject(i).get("longitude")
+            val address = cinemas.getJSONObject(i).get("address")
+            val postcode = cinemas.getJSONObject(i).get("postcode")
+            val county = cinemas.getJSONObject(i).get("county")
+            val ratings = cinemasJson.getJSONArray("ratings") as JSONArray
+            for (j in 0 until ratings.length()) {
+                val category = ratings.getJSONObject(j).get("category")
+                val score = ratings.getJSONObject(j).get("score")
+            }
+            val openingHours = cinemasJson.getJSONObject("opening_hours")
+            val daysOfWeek = listOf("Monday", "Tuesday", "Wednesday", "Thursday", "Friday", "Saturday", "Sunday")
+            val openingClosingTimes = mutableMapOf<String, Pair<String, String>>()
+            for (day in daysOfWeek) {
+                val dayObject = openingHours.getJSONObject(day)
+                val openTime = dayObject.getString("open")
+                val closeTime = dayObject.getString("close")
+                openingClosingTimes[day] = Pair(openTime, closeTime)
+            }
+
+
+// Exemplo de acesso aos horários de abertura e fechamento para segunda-feira:
+            val mondayOpen = openingClosingTimes["Monday"]?.first
+            val mondayClose = openingClosingTimes["Monday"]?.second
+
+
+        }
+
+
     }
 
     override fun onStart() {
