@@ -13,5 +13,7 @@ abstract class CineView {
     abstract fun insertFilmesRegistados(filmes: List<RegistoFilme>,onFinished: () -> Unit)
     abstract fun insertFilmeRegistado(filme: RegistoFilme, onFinished: () -> Unit)
     abstract fun clearFilmeRegistadoById(id: String, onFinished: () -> Unit)
+    abstract fun atualizarFilmeDoRegisto(registoFilmeId: String, novoFilmeId: String)
+
 
 }

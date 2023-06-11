@@ -20,21 +20,51 @@ class CineRepository private constructor(
             Log.i("APP", "O aplicativo está online. Obtendo filmes do servidor...")
             local.getFilmesRegistados { result ->
                 if (result.isSuccess) {
-                    val filmes = result.getOrNull()!!
-                    //filmes.map{
-                    //    remote.searchMovie(it.filme.nome){ result ->
-                    //        if(result.isSuccess){
-                    //            it.filme = result.getOrNull()!!
-                    //            local.clearFilmeRegistadoById(it.filme.uuid) {
-                    //                Log.i("APP", "Banco de dados limpo")
-                    //                local.insertFilmeRegistado(it) {}
-                    //            }
-                    //        }
-                    //    }
-                    //
-                    //}
-                    Log.i("APP", "Obtidos ${filmes.size} filmes do servidor")
-                    onFinished(Result.success(filmes))
+                    val filmes = result.getOrDefault(mutableListOf())
+                    val registosFilme = filmes.map {
+                        remote.searchMovie(it.filme.nome){ result ->
+                            if(result.isSuccess){
+                                var filme = result.getOrNull()
+                                if(filme != null) {
+                                    local.atualizarFilmeDoRegisto(it.filme.uuid, filme.uuid)
+                                }
+                            }
+                        }
+                        RegistoFilme(
+                            uuid = it.uuid,
+                            filme = Filme(
+                                it.filme.nome,
+                                it.filme.cartaz,
+                                it.filme.genero,
+                                it.filme.sinopse,
+                                it.filme.atores,
+                                it.filme.dataLancamento,
+                                it.filme.avaliacaoIMDB,
+                                it.filme.votosIMBD,
+                                it.filme.linkIMDB
+                            ),
+                            cinema = Cinema(
+                                it.cinema.id,
+                                it.cinema.name,
+                                it.cinema.provider,
+                                it.cinema.logoUrl,
+                                it.cinema.latitude,
+                                it.cinema.longitude,
+                                it.cinema.address,
+                                it.cinema.postcode,
+                                it.cinema.county,
+                                it.cinema.photos,
+                                it.cinema.ratings,
+                                it.cinema.hours,
+                            ),
+                            data = it.data,
+                            observacoes = it.observacoes,
+                            rating = it.rating,
+                            photos = it.photos
+                        )
+                    }
+                    Log.i("APP", "Obtidos ${registosFilme.size} filmes do servidor")
+                    onFinished(Result.success(registosFilme))
                 } else {
                     Log.w("APP", "Erro ao obter filmes do servidor...")
                     onFinished(result)  // propagar a falha remota
@@ -55,9 +85,12 @@ class CineRepository private constructor(
             onFinished()
         }
     }
-
     override fun clearFilmeRegistadoById(id: String, onFinished: () -> Unit) {
         throw Exception("Operação não permitida")
+    }
+
+    override fun atualizarFilmeDoRegisto(registoFilmeId: String, novoFilmeId: String) {
+        local.atualizarFilmeDoRegisto(registoFilmeId, novoFilmeId)
     }
 
     override fun searchMovie(title: String, onFinished: (Result<Filme>) -> Unit) {

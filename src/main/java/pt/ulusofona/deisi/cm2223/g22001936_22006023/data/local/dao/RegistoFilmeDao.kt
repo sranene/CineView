@@ -29,4 +29,8 @@ interface RegistoFilmeDao {
     @Query("SELECT * FROM RegistoFilme LIMIT 4")
     fun getUltimosRegistos(): List<RegistoFilmeDB>
 
+    @Query("UPDATE registoFilme SET filmeId = :novoFilmeId WHERE registoFilmeId = :id")
+    fun updateFilme(id: String, novoFilmeId: String)
+
+
 }

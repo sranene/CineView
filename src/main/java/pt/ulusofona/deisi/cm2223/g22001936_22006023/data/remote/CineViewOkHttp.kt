@@ -54,6 +54,7 @@ class CineViewOkhttp(
         })
     }
 
+
     override fun insertAllCinemas(cinemas: List<Cinema>) {
         throw Exception("Operação não permitida")
     }
@@ -69,6 +70,10 @@ class CineViewOkhttp(
     }
 
     override fun clearFilmeRegistadoById(id: String, onFinished: () -> Unit) {
+        throw Exception("Operação não permitida")
+    }
+
+    override fun atualizarFilmeDoRegisto(registoFilmeId: String, novoFilmeId: String) {
         throw Exception("Operação não permitida")
     }
 

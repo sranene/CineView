@@ -58,6 +58,12 @@ class CineViewDBWithRoom(private val registoFilmeDao: RegistoFilmeDao, private v
         throw Exception("Operação não permitida")
     }
 
+    override fun atualizarFilmeDoRegisto(registoFilmeId: String, novoFilmeId: String) {
+        CoroutineScope(Dispatchers.IO).launch {
+            registoFilmeDao.updateFilme(registoFilmeId, novoFilmeId)
+        }
+    }
+
     override fun insertAllCinemas(cinemas: List<Cinema>) {
         CoroutineScope(Dispatchers.IO).launch {
             cinemas.forEach {
