@@ -81,7 +81,7 @@ class MapFragment : Fragment(), OnLocationChangedListener {
                                 val clickedRegisto = clickedMarker.tag as? RegistoFilme
                                 if (clickedRegisto != null) {
                                     Log.i("APP", "u here?")
-                                    NavigationManager.goToDetalhesFragment(parentFragmentManager, it.uuid)
+                                    NavigationManager.goToDetalhesFragment(parentFragmentManager, clickedRegisto.uuid)
                                 }
                                 // Retorna false para permitir que o comportamento padrão (info window) seja executado
                                 false
