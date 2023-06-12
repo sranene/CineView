@@ -1,7 +1,9 @@
 package pt.ulusofona.deisi.cm2223.g22001936_22006023.fragments
 
 
+import android.content.Intent
 import android.graphics.Bitmap
+import android.net.Uri
 import android.os.Bundle
 import android.util.Log
 import android.view.LayoutInflater
@@ -102,7 +104,15 @@ class DetalhesFragment : Fragment() {
         binding.tvSinopse.text = ui.filme.sinopse
         binding.tvDataLancamento.text = ui.filme.dataLancamento
         binding.tvRatingIMDB.text = ui.filme.avaliacaoIMDB.toString()
-        binding.tvLink.text = ui.filme.linkIMDB
+
+        binding.btnLink.apply {
+            setOnClickListener {
+                val link = ui.filme.linkIMDB
+                val intent = Intent(Intent.ACTION_VIEW, Uri.parse(link))
+                startActivity(intent)
+            }
+        }
+
 
         binding.tvDetalhes.text = "Visto em ${ui.cinema.name} no dia ${ui.data}"
         binding.tvRating.text = ui.rating.toString()

@@ -149,11 +149,6 @@ class RegistarFilmeFragment : Fragment() {
                 }
             }
 
-            //if(Cinemas.procurarCinema(text.toString())){
-            //    binding.cinemaLayout.error = null
-            //}else{
-            //    binding.cinemaLayout.error = "Cinema inexistente por favor escolha um da lista"
-            //}
 
         }
 

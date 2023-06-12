@@ -19,7 +19,7 @@
     <string name="data">Data</string>
     <string name="rating">Rating (1–10)</string>
     <string name="submit">Registar</string>
-    <string name="image">Imagens (opcional)</string>
+    <string name="image">Imagens *opcional</string>
     <string name="map">map</string>
     <string name="lista">Lista</string>
     <string name="sinopse">Sinopse</string>
@@ -31,5 +31,6 @@
     <string name="procurar">Procurar</string>
     <string name="pesquisa_por_atores">Pesquisa Por Atores</string>
     <string name="fotos">Fotos</string>
+    <string name="saber_mais">Saber mais...</string>
 
 </resources>

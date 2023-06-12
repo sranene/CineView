@@ -52,10 +52,9 @@
                         android:id="@+id/autoCompleteTextViewFilmes"
                         android:layout_width="match_parent"
                         android:layout_height="55dp"
-                        android:paddingStart="20dp"
-                        android:textColor="@color/white"
                         android:inputType="textAutoComplete"
-                        />
+                        android:paddingStart="20dp"
+                        android:textColor="@color/white" />
 
 
                 </com.google.android.material.textfield.TextInputLayout>
@@ -85,10 +84,9 @@
                         android:id="@+id/autoCompleteTextViewCinemas"
                         android:layout_width="match_parent"
                         android:layout_height="55dp"
-                        android:paddingStart="20dp"
-                        android:textColor="@color/white"
                         android:inputType="textAutoComplete"
-                        />
+                        android:paddingStart="20dp"
+                        android:textColor="@color/white" />
 
 
                 </com.google.android.material.textfield.TextInputLayout>
@@ -160,21 +158,22 @@
                     <ImageButton
                         android:id="@+id/buttonCamera"
                         style="@style/ShapeAppearanceOverlay.Material3.Button"
-                        android:layout_width="wrap_content"
-                        android:layout_height="wrap_content"
+                        android:layout_width="40dp"
+                        android:layout_height="40dp"
                         android:layout_marginStart="10dp"
                         android:background="@color/violet"
                         android:padding="2dp"
-                        android:src="@drawable/ic_camera">
+                        android:src="@drawable/ic_camera" >
 
                     </ImageButton>
+
                 </LinearLayout>
 
                 <androidx.cardview.widget.CardView
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
-                    app:cardBackgroundColor="@color/outline_box_gray"
                     android:layout_marginTop="15dp"
+                    app:cardBackgroundColor="@color/outline_box_gray"
                     app:cardCornerRadius="4dp"
                     app:cardElevation="0dp"
                     app:cardUseCompatPadding="false">
@@ -229,6 +228,7 @@
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
                     android:backgroundTint="@color/violet"
+                    android:textAllCaps="false"
                     android:text="@string/submit"
                     android:textColor="@color/white"
                     android:textSize="24sp" />
