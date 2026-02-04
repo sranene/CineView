@@ -1,8 +1,6 @@
-[![Review Assignment Due Date](https://classroom.github.com/assets/deadline-readme-button-24ddc0f5d75046c5622901739e7c5dd533143b0c8e959d652212380cedb1ea36.svg)](https://classroom.github.com/a/3TAzxFga)
+#Aplicação Móvel CineView
 
-Aplicação Móvel CineView
-
-Grupo: Inês Marques 22001936; Robert Cachapa
+Autores: Inês Marques; Robert Cachapa
 
 SCREENSHOTS
 
@@ -46,8 +44,6 @@ Atores: [Tobey Maguire, Kirsten Dunst, Willem Dafoe, John Cusack, Thandiwe Newto
 FUNCIONALIDADES
 
 ![funcionalidades](https://user-images.githubusercontent.com/79331525/234123305-84da9a88-5678-4be7-add4-8cca695b3d2f.png)
-
-Nota esperada: 17
 
 Classes de lógica de negócio:
 
