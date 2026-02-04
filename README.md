@@ -2,7 +2,11 @@
 
 Autores: Inês Marques; Robert Cachapa
 
-SCREENSHOTS
+## App presentation
+
+Youtube link: https://youtu.be/m-OIITaUNKU
+
+## Screenshots
 
 Home
 
@@ -41,11 +45,11 @@ Filmes: [Spider-Man, 2012, Cars, The Maze Runner,  Elysium, Interstellar]
 
 Atores: [Tobey Maguire, Kirsten Dunst, Willem Dafoe, John Cusack, Thandiwe Newton, Chiwetel Ejiofor, Owen Wilson, Bonnie Hunt, Paul Newman, Dylan O'Brien, Kaya Scodelario, Will Poulter, Matt Damon, Jodie Foster, Sharlto Copley, Matthew McConaughey, Anne Hathaway]
 
-FUNCIONALIDADES
+## FUNCIONALIDADES
 
 ![funcionalidades](https://user-images.githubusercontent.com/79331525/234123305-84da9a88-5678-4be7-add4-8cca695b3d2f.png)
 
-Classes de lógica de negócio:
+## Classes de lógica de negócio:
 
 Classe Cinema:
 
@@ -142,7 +146,7 @@ Classe RegistoFilmes:
 		* get() : List<RegistoFilme>,
 
 
-FONTES
+## Sources
 
 Lista horizontal de estrelas: chatgpt com a prompt "Como substituo um número do rating para uma lista na horizontal de estrelas"
 
