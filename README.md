@@ -30,7 +30,7 @@ Youtube link: https://youtu.be/m-OIITaUNKU
 
 #### Filmes Vistos (Landscape)
 <p align="center">
-  <img src="https://user-images.githubusercontent.com/79331525/234126290-322a58f0-4951-4f7b-a04c-44250a49c95d.png" width="260"/>
+  <img src="https://user-images.githubusercontent.com/79331525/234126290-322a58f0-4951-4f7b-a04c-44250a49c95d.png" height="260"/>
 </p>
 
 #### Filmes Vistos (Mapa)
