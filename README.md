@@ -1,6 +1,8 @@
 # Aplicação Móvel CineView
 
-Autores: Inês Marques; Robert Cachapa
+**CineView** is a mobile application designed to help users keep a personal record of the movies they have watched. Rather than focusing on discovering new films, the app is centered on registering viewing experiences, allowing users to store detailed movie information together with their own reviews.
+
+Movie data is retrieved from the IMDb API, providing details such as genre, plot, cast, ratings, and poster. Users can associate each movie with a cinema from a predefined JSON list, add photos, write personal observations, and rate the film using a star system. Registered movies can later be explored through a list view or visually on a map, creating an interactive diary of cinema experiences. Additionally, users can search their registered movies by actor names, making it easier to revisit films connected to specific performers.
 
 ## App presentation
 
@@ -170,4 +172,7 @@ Custom Text Fields: https://www.youtube.com/watch?v=IxhIa3eZxz8
 
 Custom Rating Bar: https://www.youtube.com/watch?v=HRIDAFJ4jMs || https://www.youtube.com/watch?v=Dvz2MLJX-Ss&t=195s
 
+## Authors
 
+- Inês Marques
+- Robert Cachapa
