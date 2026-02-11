@@ -1,65 +1,55 @@
-# Aplicação Móvel CineView
+[![Review Assignment Due Date](https://classroom.github.com/assets/deadline-readme-button-24ddc0f5d75046c5622901739e7c5dd533143b0c8e959d652212380cedb1ea36.svg)](https://classroom.github.com/a/3TAzxFga)
 
-**CineView** is a mobile application designed to help users keep a personal record of the movies they have watched. Rather than focusing on discovering new films, the app is centered on registering viewing experiences, allowing users to store detailed movie information together with their own reviews.
+Aplicação Móvel CineView
 
-Movie data is retrieved from the IMDb API, providing details such as genre, plot, cast, ratings, and poster. Users can associate each movie with a cinema from a predefined JSON list, add photos, write personal observations, and rate the film using a star system. Registered movies can later be explored through a list view or visually on a map, creating an interactive diary of cinema experiences. Additionally, users can search their registered movies by actor names, making it easier to revisit films connected to specific performers.
+Grupo: Inês Marques 22001936; Robert Cachapa
 
-## App presentation
+SCREENSHOTS
 
-Youtube link: https://youtu.be/m-OIITaUNKU
+Home
 
-## Screenshots
+![home](https://user-images.githubusercontent.com/79331525/234125498-e83aa53d-9c8a-466a-adcb-31ad4e787f37.png)
 
-#### Home
-<p align="center">
-  <img src="https://user-images.githubusercontent.com/79331525/234125498-e83aa53d-9c8a-466a-adcb-31ad4e787f37.png" width="260"/>
-</p>
+PopUp Microfone
 
-#### PopUp Microfone
-<p align="center">
-  <img src="https://user-images.githubusercontent.com/79331525/234123997-3d0b32ce-154e-4c09-8122-a9686a5f766f.png" width="260"/>
-</p>
+![popup](https://user-images.githubusercontent.com/79331525/234123997-3d0b32ce-154e-4c09-8122-a9686a5f766f.png)
 
-#### Registar Filme
-<p align="center">
-  <img src="https://user-images.githubusercontent.com/79331525/234124031-fd78ac46-2fef-4b73-9962-e5758b22efac.png" width="260"/>
-</p>
+Registar Filme
 
-#### Filmes Vistos
-<p align="center">
-  <img src="https://user-images.githubusercontent.com/79331525/234125628-5aa62e4f-2e24-4423-ace7-3f0ea0954b13.png" width="260"/>
-</p>
+![registarfilme](https://user-images.githubusercontent.com/79331525/234124031-fd78ac46-2fef-4b73-9962-e5758b22efac.png)
 
-#### Filmes Vistos (Landscape)
-<p align="center">
-  <img src="https://user-images.githubusercontent.com/79331525/234126290-322a58f0-4951-4f7b-a04c-44250a49c95d.png" height="260"/>
-</p>
+Filmes Vistos
 
-#### Filmes Vistos (Mapa)
-<p align="center">
-  <img src="https://user-images.githubusercontent.com/79331525/234125940-e360bb3a-f36e-4967-a2aa-a609fcb0530b.png" width="260"/>
-</p>
+![filmesvistos](https://user-images.githubusercontent.com/79331525/234125628-5aa62e4f-2e24-4423-ace7-3f0ea0954b13.png)
 
-#### Detalhe do Filme
-<p align="center">
-  <img src="https://user-images.githubusercontent.com/79331525/234126347-88b8ba59-9dc3-46c1-812e-f08c70593eae.png" width="260"/>
-  <img src="https://user-images.githubusercontent.com/79331525/234126435-a6281519-96fe-4695-bbcf-8a33a4448d17.png" width="260"/>
-</p>
+Filmes Vistos (Land)
 
-#### Pesquisa por Atores
-<p align="center">
-  <img src="https://user-images.githubusercontent.com/79331525/234126658-c3fee93f-02f6-40ac-982d-cded005581f9.png" width="260"/>
-</p>
+![filmesvistosland](https://user-images.githubusercontent.com/79331525/234126290-322a58f0-4951-4f7b-a04c-44250a49c95d.png)
+
+Filmes Vistos (Mapa)
+
+![mapa](https://user-images.githubusercontent.com/79331525/234125940-e360bb3a-f36e-4967-a2aa-a609fcb0530b.png)
+
+Detalhe do Filme
+
+![detalhe1](https://user-images.githubusercontent.com/79331525/234126347-88b8ba59-9dc3-46c1-812e-f08c70593eae.png)
+![detalhe2](https://user-images.githubusercontent.com/79331525/234126435-a6281519-96fe-4695-bbcf-8a33a4448d17.png)
+
+Pesquisa por Atores
+
+![pesquisa](https://user-images.githubusercontent.com/79331525/234126658-c3fee93f-02f6-40ac-982d-cded005581f9.png)
 
 Filmes: [Spider-Man, 2012, Cars, The Maze Runner,  Elysium, Interstellar]
 
 Atores: [Tobey Maguire, Kirsten Dunst, Willem Dafoe, John Cusack, Thandiwe Newton, Chiwetel Ejiofor, Owen Wilson, Bonnie Hunt, Paul Newman, Dylan O'Brien, Kaya Scodelario, Will Poulter, Matt Damon, Jodie Foster, Sharlto Copley, Matthew McConaughey, Anne Hathaway]
 
-## FUNCIONALIDADES
+FUNCIONALIDADES
 
 ![funcionalidades](https://user-images.githubusercontent.com/79331525/234123305-84da9a88-5678-4be7-add4-8cca695b3d2f.png)
 
-## Classes de lógica de negócio:
+Nota esperada: 17
+
+Classes de lógica de negócio:
 
 Classe Cinema:
 
@@ -156,7 +146,7 @@ Classe RegistoFilmes:
 		* get() : List<RegistoFilme>,
 
 
-## Sources
+FONTES
 
 Lista horizontal de estrelas: chatgpt com a prompt "Como substituo um número do rating para uma lista na horizontal de estrelas"
 
@@ -172,7 +162,4 @@ Custom Text Fields: https://www.youtube.com/watch?v=IxhIa3eZxz8
 
 Custom Rating Bar: https://www.youtube.com/watch?v=HRIDAFJ4jMs || https://www.youtube.com/watch?v=Dvz2MLJX-Ss&t=195s
 
-## Authors
 
-- Inês Marques
-- Robert Cachapa
