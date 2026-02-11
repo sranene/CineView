@@ -161,5 +161,3 @@ AutoComplete para Filmes, Cinemas e Atores: https://stackoverflow.com/questions/
 Custom Text Fields: https://www.youtube.com/watch?v=IxhIa3eZxz8
 
 Custom Rating Bar: https://www.youtube.com/watch?v=HRIDAFJ4jMs || https://www.youtube.com/watch?v=Dvz2MLJX-Ss&t=195s
-
-
